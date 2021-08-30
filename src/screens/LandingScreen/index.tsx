@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text, Image, Dimensions, StyleSheet, } from 'react-native'
+import * as Location from 'expo-location'
 
 const screenWidth = Dimensions.get('screen').width
 
