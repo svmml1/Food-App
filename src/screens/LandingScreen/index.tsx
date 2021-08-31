@@ -1,11 +1,56 @@
-import React from 'react'
+import React,{ useState, useReducer, useEffect} from 'react'
 import { View, Text, Image, Dimensions, StyleSheet, } from 'react-native'
 import * as Location from 'expo-location'
+
+import { useNavigation } from '../../utils/useNavigation'
 
 const screenWidth = Dimensions.get('screen').width
 
 
+
 export const LandingScreen = () => {
+
+  const { navigate } = useNavigation()
+
+  const [erroMsg, setErrorMsg] = useState("")
+  const [address, setAddress] = useState<Location.Address>()
+  
+  const [displayAddress, setDisplayAddress] = useState("Waiting for Current Location")
+
+  useEffect(() => {
+
+    (async () => {
+      let {status } = await Location.requestPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location is not granted')
+      }
+
+      let location: any =  await Location.getCurrentPositionAsync({});
+
+      const { coords } = location
+
+      if(coords) {
+
+        const { latitude, longitude} = coords;
+        let addressResponse: any =  await Location.reverseGeocodeAsync({ latitude, longitude})
+
+        for( let item of addressResponse){
+          setAddress(item)
+          let currentAddress = `${item.name},${item.street},${item.postalCode}, ${item.country}`
+          setDisplayAddress(currentAddress)
+          if(currentAddress.length > 0){
+            setTimeout(() => {
+              navigate('homeStack')
+            }, 2000)
+          }
+          return;
+        }
+      }else {
+
+      }
+    })
+
+  })
 
 
   return (
@@ -19,7 +64,7 @@ export const LandingScreen = () => {
         <Text> Seu endereço de entraga</Text>
 
         </View>
-        <Text style={styles.addressText}>Esperando a localização</Text>
+        <Text style={styles.addressText}>{displayAddress}</Text>
       </View>
       <View style={styles.footer}>
         
