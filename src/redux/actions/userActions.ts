@@ -35,6 +35,8 @@ export const onUpdateLocation = (location: Address) => {
 
   return async ( dispatch: Dispatch<UserAction>) => {
     try {
+      const locationString = JSON.stringify(location)
+      await AsyncStorage.setItem('user_location', locationString)
        // save our location in local storage
        dispatch({
          type: 'ON_UPDATE_LOCATION',

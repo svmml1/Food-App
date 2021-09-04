@@ -2,11 +2,10 @@ import React from 'react'
 import { View, Text, StyleSheet, Dimensions , Image } from 'react-native'
 
 
-export function HomeScreen () {
+export function CartScreen () {
   return (
     <View>
-      <Text>Home</Text>
+      <Text>CartScreen</Text>
     </View>
   )
 }
-
